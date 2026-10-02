@@ -63,8 +63,9 @@ export function CareerPanel({ student, onApply }: { student: Student; onApply: (
       {result && (
         <div className="mt-4" aria-live="polite">
           <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-            {result.source === "ai" ? "✨ AI-generated recommendation, verified by GatorPath" : "Offline keyword match (no AI key set)"}
+            {result.source === "ai" ? "✨ AI-generated recommendation, verified by GatorPath" : "Offline keyword match"}
           </p>
+          {result.aiError && <p className="mt-1 text-xs text-red-700">AI unavailable: {result.aiError}</p>}
           <ol className="mt-2 space-y-2">
             {result.picks.map((p, i) => (
               <li key={p.code} className="rounded-lg border border-gray-200 p-3">

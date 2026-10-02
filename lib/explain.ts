@@ -17,6 +17,7 @@ export interface WhatIfFacts {
 export interface Explanation {
   text: string;
   source: "ai" | "offline";
+  aiError?: string;
 }
 
 function factSheet(f: WhatIfFacts): string {
@@ -59,6 +60,6 @@ Say why later courses moved (prerequisite chain vs. unit cap), state the graduat
 Never promise a graduation date; say "projected". No markdown.`;
 
 export async function explainWhatIf(f: WhatIfFacts): Promise<Explanation> {
-  const text = await complete(SYSTEM, factSheet(f));
-  return text ? { text, source: "ai" } : { text: offlineExplanation(f), source: "offline" };
+  const r = await complete(SYSTEM, factSheet(f));
+  return r.text ? { text: r.text, source: "ai" } : { text: offlineExplanation(f), source: "offline", aiError: r.error };
 }

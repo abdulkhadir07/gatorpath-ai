@@ -14,6 +14,7 @@ export interface ElectiveResult {
   source: "ai" | "offline";
   /** Codes the model suggested that the engine refused (not real or not eligible). */
   rejected: string[];
+  aiError?: string;
   /** True when the picks keep the current graduation term. */
   keepsGraduation: boolean;
 }
@@ -97,7 +98,8 @@ export async function recommendElectives(student: Student, goal: string): Promis
     ...eligible.map((c) => `${c.code} | ${c.title} | ${(c.tags ?? []).join(", ")}`),
   ].join("\n");
 
-  const reply = await complete(SYSTEM, user, { json: true });
+  const ai = await complete(SYSTEM, user, { json: true });
+  const reply = ai.text;
   const parsed = reply ? parseJson<{ picks?: { code?: string; reason?: string }[] }>(reply) : null;
 
   let picks: ElectivePick[] = [];
@@ -126,6 +128,7 @@ export async function recommendElectives(student: Student, goal: string): Promis
     picks,
     source,
     rejected,
+    aiError: source === "ai" ? undefined : (ai.error ?? (reply ? "AI reply wasn't valid JSON" : undefined)),
     keepsGraduation: newPlan.graduationTerm <= basePlan.graduationTerm && newPlan.unscheduled.length === 0,
   };
 }

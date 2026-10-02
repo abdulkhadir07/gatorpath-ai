@@ -14,7 +14,7 @@ const DEMO = alexJson as Student;
 export function Planner() {
   const [student, setStudent] = useState<Student>(DEMO);
   const [move, setMove] = useState<{ code: string; toTerm: Term } | null>(null);
-  const [explanation, setExplanation] = useState<{ text: string; source: string } | null>(null);
+  const [explanation, setExplanation] = useState<{ text: string; source: string; aiError?: string } | null>(null);
   const [explaining, setExplaining] = useState(false);
 
   const base = useMemo(() => buildPlan(student), [student]);
@@ -190,6 +190,7 @@ export function Planner() {
               <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
                 {explanation.source === "ai" ? "✨ AI explanation of GatorPath's calculation" : "Explanation (offline template)"}
               </p>
+              {explanation.aiError && <p className="mt-1 text-xs text-red-700">AI unavailable: {explanation.aiError}</p>}
               <p className="mt-1">{explanation.text}</p>
             </div>
           )}

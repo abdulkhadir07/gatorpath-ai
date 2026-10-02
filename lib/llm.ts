@@ -97,19 +97,28 @@ async function callProvider(provider: Provider, system: string, user: string, js
 const GEMINI_MODELS = ["gemini-3.8-flash", "gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.1-flash-lite"];
 let workingGemini: { model: string; api: "generateContent" | "interactions" } | null = null;
 
+/** A key Google rejects outright. Retrying other models can't help. */
 class AuthError extends Error {}
+
+let lastGeminiAttempts: string[] = [];
+
+function isUnauthenticated(err: unknown): boolean {
+  return err instanceof Error && /^401 /.test(err.message);
+}
 
 async function gemini(system: string, user: string, json: boolean, signal: AbortSignal): Promise<string | null> {
   const preferred = process.env.GEMINI_MODEL?.trim();
   const models = [...new Set([preferred, ...GEMINI_MODELS].filter((m): m is string => !!m))];
   const attempts = workingGemini
     ? [workingGemini]
-    : models.flatMap((model) => [
-        { model, api: "generateContent" as const },
-        { model, api: "interactions" as const },
-      ]);
+    : [
+        // generateContent works with AI Studio keys; the Interactions API is only a backup.
+        ...models.map((model) => ({ model, api: "generateContent" as const })),
+        ...models.map((model) => ({ model, api: "interactions" as const })),
+      ];
 
-  let lastError: unknown = null;
+  lastGeminiAttempts = [];
+  let firstUsefulError: unknown = null;
   for (const attempt of attempts) {
     try {
       const text =
@@ -122,12 +131,14 @@ async function gemini(system: string, user: string, json: boolean, signal: Abort
         return text;
       }
     } catch (err) {
+      lastGeminiAttempts.push(`${attempt.model} via ${attempt.api}: ${shortError(err)}`);
       if (err instanceof AuthError) throw err; // a bad key won't work with any model
-      lastError = err;
+      // Prefer reporting a model/endpoint error over a 401 from the backup endpoint.
+      if (!firstUsefulError || isUnauthenticated(firstUsefulError)) firstUsefulError = err;
     }
   }
   workingGemini = null;
-  throw lastError ?? new Error("No Gemini model returned text");
+  throw firstUsefulError ?? new Error("No Gemini model returned text");
 }
 
 async function geminiFetch(path: string, body: unknown, signal: AbortSignal) {
@@ -139,7 +150,8 @@ async function geminiFetch(path: string, body: unknown, signal: AbortSignal) {
   });
   if (!res.ok) {
     const text = await res.text();
-    const Err = res.status === 401 || res.status === 403 || /API_KEY_INVALID/.test(text) ? AuthError : Error;
+    // Only an invalid key is fatal. A 401 can come from an endpoint that doesn't accept API keys.
+    const Err = /API_KEY_INVALID/.test(text) ? AuthError : Error;
     throw new Err(`${res.status} ${text}`);
   }
   return res.json();
@@ -181,6 +193,7 @@ export async function aiStatus() {
     working: !!r.text,
     reply: r.text,
     error: r.error ?? null,
+    attempts: provider === "gemini" ? lastGeminiAttempts : [],
   };
 }
 

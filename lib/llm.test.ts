@@ -24,7 +24,7 @@ describe("Gemini fallback", () => {
     });
     const { complete } = await import("./llm");
     expect(await complete("sys", "hi")).toEqual({ text: "Hello" });
-    expect(calls[1]).toContain("/v1beta/interactions");
+    expect(calls.some((u) => u.endsWith("/v1beta/interactions"))).toBe(true);
   });
 
   it("tries the next model when one is unavailable", async () => {
@@ -55,5 +55,26 @@ describe("Gemini fallback", () => {
     vi.stubEnv("GEMINI_API_KEY", "");
     const { complete } = await import("./llm");
     expect((await complete("sys", "hi")).error).toMatch(/No AI key/);
+  });
+});
+
+describe("Gemini 401 handling", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    vi.unstubAllGlobals();
+  });
+
+  it("keeps trying when one endpoint rejects API keys with 401", async () => {
+    vi.resetModules();
+    vi.stubEnv("GEMINI_API_KEY", "AQ.k");
+    vi.stubEnv("GEMINI_MODEL", "");
+    vi.stubGlobal("fetch", async (url: string) => {
+      if (url.includes("gemini-3.8-flash:generateContent"))
+        return json(401, { error: { message: "Request had invalid authentication credentials. Expected OAuth 2 access token" } });
+      if (url.includes("gemini-3.5-flash:generateContent")) return json(200, { candidates: [{ content: { parts: [{ text: "Hi" }] } }] });
+      return json(404, { error: { message: "not found" } });
+    });
+    const { complete } = await import("./llm");
+    expect((await complete("sys", "hi")).text).toBe("Hi");
   });
 });

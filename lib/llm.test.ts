@@ -78,3 +78,25 @@ describe("Gemini 401 handling", () => {
     expect((await complete("sys", "hi")).text).toBe("Hi");
   });
 });
+
+it("reads keys with $ from .env.local untouched", async () => {
+  const { mkdtempSync, writeFileSync } = await import("node:fs");
+  const { tmpdir } = await import("node:os");
+  const { join } = await import("node:path");
+  const dir = mkdtempSync(join(tmpdir(), "gp-"));
+  writeFileSync(join(dir, ".env.local"), "GEMINI_API_KEY=AQ.ab$cd$EF\nGEMINI_MODEL=x\n");
+  const cwd = vi.spyOn(process, "cwd").mockReturnValue(dir);
+  vi.resetModules();
+  vi.stubEnv("GEMINI_API_KEY", "AQ.ab"); // what Next.js's $-expansion leaves behind
+  let sent = "";
+  vi.stubGlobal("fetch", async (_url: string, init: RequestInit) => {
+    sent = (init.headers as Record<string, string>)["x-goog-api-key"];
+    return json(200, { candidates: [{ content: { parts: [{ text: "ok" }] } }] });
+  });
+  const { complete } = await import("./llm");
+  await complete("s", "u");
+  expect(sent).toBe("AQ.ab$cd$EF");
+  cwd.mockRestore();
+  vi.unstubAllEnvs();
+  vi.unstubAllGlobals();
+});

@@ -1,3 +1,6 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
 /**
  * Minimal provider-agnostic LLM call over plain fetch. Picks the provider from AI_PROVIDER,
  * or from whichever API key is set. Returns null when no key is configured or the call fails,
@@ -5,9 +8,23 @@
  */
 type Provider = "gemini" | "openai" | "anthropic";
 
-/** Read a key, tolerating stray spaces or quotes pasted into .env.local. */
+/**
+ * Read a key. Next.js expands "$..." inside .env files, which silently corrupts keys that
+ * contain a "$", so prefer the raw value from .env.local when the file exists (local dev).
+ * On Vercel the variable comes from the dashboard and is used as-is.
+ */
 function key(name: string): string {
-  return (process.env[name] ?? "").trim().replace(/^["']|["']$/g, "");
+  return (rawEnvLocal(name) ?? process.env[name] ?? "").trim().replace(/^["']|["']$/g, "");
+}
+
+function rawEnvLocal(name: string): string | undefined {
+  try {
+    const file = readFileSync(join(process.cwd(), ".env.local"), "utf8");
+    const line = file.split(/\r?\n/).find((l) => l.trim().startsWith(`${name}=`));
+    return line?.slice(line.indexOf("=") + 1);
+  } catch {
+    return undefined;
+  }
 }
 
 function pickProvider(): Provider | null {
@@ -194,6 +211,15 @@ export async function aiStatus() {
     reply: r.text,
     error: r.error ?? null,
     attempts: provider === "gemini" ? lastGeminiAttempts : [],
+    // Safe to show: length and first 4 characters only, from the file and as Next.js loaded it.
+    keyCheck: provider
+      ? (() => {
+          const name = `${provider.toUpperCase()}_API_KEY`;
+          const used = key(name);
+          const loaded = (process.env[name] ?? "").trim();
+          return { length: used.length, starts: used.slice(0, 4), nextjsLoadedLength: loaded.length, hasDollar: used.includes("$") };
+        })()
+      : null,
   };
 }
 

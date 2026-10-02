@@ -1,0 +1,671 @@
+{
+  "source": "SFSU Bulletin 2025-26: BS Computer Science (bulletin.sfsu.edu/colleges/science-engineering/computer-science/bs-computer-science/) and CSC/MATH/PHYS course listings. Fetched 2026-10-02.",
+  "modelingNotes": [
+    "prereqs is a list of AND-groups; each group lists OR alternatives.",
+    "All listed prereqs require C or better; grades are not modeled.",
+    "Upper-division standing, GPA 3.0 and permission-of-instructor alternatives are not modeled.",
+    "Term availability is unknown; every course is assumed offered every fall and spring.",
+    "Electives are a subset of the 50+ approved senior electives.",
+    "CSC 697 prereq is '(CSC 415 and CSC 510) or CSC 648', encoded as (415 or 648) and (510 or 648)."
+  ],
+  "degree": {
+    "major": "BS Computer Science",
+    "totalMajorUnits": 74,
+    "requiredCourses": [
+      "MATH 226",
+      "MATH 227",
+      "MATH 225",
+      "MATH 324",
+      "PHYS 220",
+      "PHYS 222",
+      "PHYS 230",
+      "PHYS 232",
+      "CSC 101",
+      "CSC 215",
+      "CSC 220",
+      "CSC 230",
+      "CSC 256",
+      "CSC 300GW",
+      "CSC 317",
+      "CSC 340",
+      "CSC 413",
+      "CSC 415",
+      "CSC 510",
+      "CSC 648"
+    ],
+    "electives": {
+      "count": 5,
+      "unitsEach": 3,
+      "rule": "Five 3-unit senior electives; at least 12 units must be CSC."
+    }
+  },
+  "courses": [
+    {
+      "code": "MATH 226",
+      "title": "Calculus I",
+      "units": 4,
+      "kind": "support",
+      "prereqs": []
+    },
+    {
+      "code": "MATH 227",
+      "title": "Calculus II",
+      "units": 4,
+      "kind": "support",
+      "prereqs": [
+        [
+          "MATH 226"
+        ]
+      ]
+    },
+    {
+      "code": "MATH 225",
+      "title": "Introduction to Linear Algebra",
+      "units": 3,
+      "kind": "support",
+      "prereqs": [
+        [
+          "MATH 226"
+        ]
+      ]
+    },
+    {
+      "code": "MATH 324",
+      "title": "Probability and Statistics with Computing",
+      "units": 3,
+      "kind": "support",
+      "prereqs": [
+        [
+          "MATH 227"
+        ]
+      ]
+    },
+    {
+      "code": "PHYS 220",
+      "title": "General Physics with Calculus I",
+      "units": 3,
+      "kind": "support",
+      "prereqs": [
+        [
+          "MATH 226"
+        ],
+        [
+          "PHYS 222"
+        ]
+      ],
+      "concurrentOk": [
+        "PHYS 222"
+      ]
+    },
+    {
+      "code": "PHYS 222",
+      "title": "General Physics with Calculus I Laboratory",
+      "units": 1,
+      "kind": "support",
+      "prereqs": [
+        [
+          "PHYS 220"
+        ]
+      ],
+      "concurrentOk": [
+        "PHYS 220"
+      ]
+    },
+    {
+      "code": "PHYS 230",
+      "title": "General Physics with Calculus II",
+      "units": 3,
+      "kind": "support",
+      "prereqs": [
+        [
+          "PHYS 220"
+        ],
+        [
+          "MATH 227"
+        ],
+        [
+          "PHYS 232"
+        ]
+      ],
+      "concurrentOk": [
+        "PHYS 232"
+      ]
+    },
+    {
+      "code": "PHYS 232",
+      "title": "General Physics with Calculus II Laboratory",
+      "units": 1,
+      "kind": "support",
+      "prereqs": [
+        [
+          "PHYS 230"
+        ]
+      ],
+      "concurrentOk": [
+        "PHYS 230"
+      ]
+    },
+    {
+      "code": "CSC 101",
+      "title": "Introduction to Computing",
+      "units": 3,
+      "kind": "core",
+      "prereqs": []
+    },
+    {
+      "code": "CSC 215",
+      "title": "Intermediate Computer Programming",
+      "units": 4,
+      "kind": "core",
+      "prereqs": [
+        [
+          "CSC 101"
+        ]
+      ]
+    },
+    {
+      "code": "CSC 220",
+      "title": "Data Structures",
+      "units": 3,
+      "kind": "core",
+      "prereqs": [
+        [
+          "CSC 210",
+          "CSC 215"
+        ]
+      ]
+    },
+    {
+      "code": "CSC 230",
+      "title": "Discrete Mathematical Structures for Computer Science",
+      "units": 3,
+      "kind": "core",
+      "prereqs": [
+        [
+          "CSC 210",
+          "CSC 215",
+          "ENGR 213"
+        ],
+        [
+          "MATH 227"
+        ]
+      ],
+      "concurrentOk": [
+        "MATH 227"
+      ]
+    },
+    {
+      "code": "CSC 256",
+      "title": "Machine Structures",
+      "units": 3,
+      "kind": "core",
+      "prereqs": [
+        [
+          "CSC 230"
+        ]
+      ]
+    },
+    {
+      "code": "CSC 300GW",
+      "title": "Ethics, Communication, and Tools for Software Development (GWAR)",
+      "units": 3,
+      "kind": "core",
+      "prereqs": [
+        [
+          "CSC 210",
+          "CSC 215"
+        ]
+      ],
+      "note": "Also requires upper-division standing and GE Area A2 (not modeled)."
+    },
+    {
+      "code": "CSC 317",
+      "title": "Introduction to Web Software Development",
+      "units": 3,
+      "kind": "core",
+      "prereqs": [
+        [
+          "CSC 220"
+        ]
+      ]
+    },
+    {
+      "code": "CSC 340",
+      "title": "Programming Methodology",
+      "units": 3,
+      "kind": "core",
+      "prereqs": [
+        [
+          "CSC 220"
+        ],
+        [
+          "CSC 230"
+        ]
+      ]
+    },
+    {
+      "code": "CSC 413",
+      "title": "Software Development",
+      "units": 3,
+      "kind": "core",
+      "prereqs": [
+        [
+          "CSC 220"
+        ],
+        [
+          "CSC 317"
+        ]
+      ]
+    },
+    {
+      "code": "CSC 415",
+      "title": "Operating System Principles",
+      "units": 3,
+      "kind": "advanced",
+      "prereqs": [
+        [
+          "CSC 256"
+        ],
+        [
+          "CSC 340"
+        ],
+        [
+          "MATH 324"
+        ],
+        [
+          "PHYS 230"
+        ]
+      ]
+    },
+    {
+      "code": "CSC 510",
+      "title": "Analysis of Algorithms I",
+      "units": 3,
+      "kind": "advanced",
+      "prereqs": [
+        [
+          "CSC 340"
+        ],
+        [
+          "MATH 324"
+        ]
+      ]
+    },
+    {
+      "code": "CSC 648",
+      "title": "Software Engineering",
+      "units": 3,
+      "kind": "advanced",
+      "prereqs": [
+        [
+          "CSC 317"
+        ],
+        [
+          "CSC 413"
+        ]
+      ],
+      "note": "Also requires upper-division standing and 3.0 GPA (not modeled)."
+    },
+    {
+      "code": "CSC 520",
+      "title": "Theory of Computing",
+      "units": 3,
+      "kind": "elective",
+      "prereqs": [
+        [
+          "CSC 220"
+        ],
+        [
+          "CSC 230"
+        ],
+        [
+          "MATH 225",
+          "MATH 325"
+        ]
+      ],
+      "tags": [
+        "theory"
+      ]
+    },
+    {
+      "code": "CSC 600",
+      "title": "Programming Paradigms and Languages",
+      "units": 3,
+      "kind": "elective",
+      "prereqs": [
+        [
+          "CSC 413"
+        ],
+        [
+          "CSC 510"
+        ]
+      ],
+      "tags": [
+        "languages",
+        "software"
+      ]
+    },
+    {
+      "code": "CSC 615",
+      "title": "Embedded Linux Systems and Physical Computing",
+      "units": 3,
+      "kind": "elective",
+      "prereqs": [
+        [
+          "CSC 415"
+        ]
+      ],
+      "tags": [
+        "systems",
+        "hardware"
+      ]
+    },
+    {
+      "code": "CSC 620",
+      "title": "Natural Language Technologies",
+      "units": 3,
+      "kind": "elective",
+      "prereqs": [
+        [
+          "CSC 413"
+        ]
+      ],
+      "tags": [
+        "ai",
+        "nlp"
+      ]
+    },
+    {
+      "code": "CSC 630",
+      "title": "Computer Graphics Systems Design",
+      "units": 3,
+      "kind": "elective",
+      "prereqs": [
+        [
+          "CSC 413"
+        ],
+        [
+          "MATH 225",
+          "MATH 325"
+        ]
+      ],
+      "tags": [
+        "graphics",
+        "games"
+      ]
+    },
+    {
+      "code": "CSC 631",
+      "title": "Multiplayer Game Development",
+      "units": 3,
+      "kind": "elective",
+      "prereqs": [
+        [
+          "CSC 413"
+        ]
+      ],
+      "tags": [
+        "games",
+        "software"
+      ]
+    },
+    {
+      "code": "CSC 642",
+      "title": "Human-Computer Interaction",
+      "units": 3,
+      "kind": "elective",
+      "prereqs": [
+        [
+          "CSC 413"
+        ]
+      ],
+      "tags": [
+        "design",
+        "web",
+        "accessibility"
+      ]
+    },
+    {
+      "code": "CSC 645",
+      "title": "Computer Networks",
+      "units": 3,
+      "kind": "elective",
+      "prereqs": [
+        [
+          "CSC 415"
+        ]
+      ],
+      "tags": [
+        "systems",
+        "networking"
+      ]
+    },
+    {
+      "code": "CSC 647",
+      "title": "Introduction to Quantum Computing and Quantum Information Science",
+      "units": 3,
+      "kind": "elective",
+      "prereqs": [
+        [
+          "CSC 415"
+        ],
+        [
+          "MATH 225",
+          "MATH 325"
+        ]
+      ],
+      "tags": [
+        "quantum",
+        "theory"
+      ]
+    },
+    {
+      "code": "CSC 651",
+      "title": "System Administration",
+      "units": 3,
+      "kind": "elective",
+      "prereqs": [
+        [
+          "CSC 413"
+        ],
+        [
+          "CSC 415"
+        ]
+      ],
+      "tags": [
+        "systems",
+        "devops",
+        "cloud"
+      ]
+    },
+    {
+      "code": "CSC 652",
+      "title": "Introduction to Security and Data Privacy",
+      "units": 3,
+      "kind": "elective",
+      "prereqs": [
+        [
+          "CSC 415"
+        ]
+      ],
+      "tags": [
+        "security",
+        "privacy"
+      ]
+    },
+    {
+      "code": "CSC 653",
+      "title": "Network Security",
+      "units": 3,
+      "kind": "elective",
+      "prereqs": [
+        [
+          "CSC 415"
+        ]
+      ],
+      "tags": [
+        "security",
+        "networking"
+      ]
+    },
+    {
+      "code": "CSC 659",
+      "title": "AI Explainability and Ethics",
+      "units": 3,
+      "kind": "elective",
+      "prereqs": [
+        [
+          "CSC 413"
+        ]
+      ],
+      "tags": [
+        "ai",
+        "ethics"
+      ]
+    },
+    {
+      "code": "CSC 664",
+      "title": "Multimedia Systems",
+      "units": 3,
+      "kind": "elective",
+      "prereqs": [
+        [
+          "CSC 413"
+        ]
+      ],
+      "tags": [
+        "media"
+      ]
+    },
+    {
+      "code": "CSC 665",
+      "title": "Artificial Intelligence",
+      "units": 3,
+      "kind": "elective",
+      "prereqs": [
+        [
+          "CSC 413"
+        ]
+      ],
+      "tags": [
+        "ai"
+      ]
+    },
+    {
+      "code": "CSC 667",
+      "title": "Internet Application Design and Development",
+      "units": 3,
+      "kind": "elective",
+      "prereqs": [
+        [
+          "CSC 413"
+        ]
+      ],
+      "tags": [
+        "web",
+        "software",
+        "full-stack"
+      ]
+    },
+    {
+      "code": "CSC 668",
+      "title": "Advanced Object Oriented Software Design and Development",
+      "units": 3,
+      "kind": "elective",
+      "prereqs": [
+        [
+          "CSC 413"
+        ]
+      ],
+      "tags": [
+        "software",
+        "design-patterns"
+      ]
+    },
+    {
+      "code": "CSC 671",
+      "title": "Deep Learning",
+      "units": 3,
+      "kind": "elective",
+      "prereqs": [
+        [
+          "CSC 510"
+        ],
+        [
+          "MATH 225",
+          "MATH 325"
+        ]
+      ],
+      "tags": [
+        "ai",
+        "ml"
+      ]
+    },
+    {
+      "code": "CSC 675",
+      "title": "Introduction to Database Systems",
+      "units": 3,
+      "kind": "elective",
+      "prereqs": [
+        [
+          "CSC 413"
+        ]
+      ],
+      "tags": [
+        "databases",
+        "data",
+        "backend"
+      ]
+    },
+    {
+      "code": "CSC 680",
+      "title": "Application Development for Mobile Devices",
+      "units": 3,
+      "kind": "elective",
+      "prereqs": [
+        [
+          "CSC 415"
+        ]
+      ],
+      "tags": [
+        "mobile",
+        "software"
+      ]
+    },
+    {
+      "code": "CSC 688",
+      "title": "AI Entrepreneurship",
+      "units": 3,
+      "kind": "elective",
+      "prereqs": [
+        [
+          "CSC 317"
+        ]
+      ],
+      "tags": [
+        "ai",
+        "startups",
+        "product"
+      ]
+    },
+    {
+      "code": "CSC 697",
+      "title": "Senior Project in Computer Science",
+      "units": 3,
+      "kind": "elective",
+      "prereqs": [
+        [
+          "CSC 415",
+          "CSC 648"
+        ],
+        [
+          "CSC 510",
+          "CSC 648"
+        ]
+      ],
+      "tags": [
+        "capstone"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Alex",
+  "major": "BS Computer Science",
+  "careerGoal": "Software engineer at a product company",
+  "completed": ["CSC 101", "CSC 215", "CSC 220", "CSC 230", "MATH 226", "MATH 227", "MATH 225", "PHYS 220", "PHYS 222"],
+  "inProgress": ["CSC 256", "CSC 317", "MATH 324", "PHYS 230", "PHYS 232"],
+  "currentTerm": 4053,
+  "electiveChoices": ["CSC 642", "CSC 652", "CSC 665", "CSC 667", "CSC 675"],
+  "maxUnitsPerTerm": 12,
+  "pins": {}
+}

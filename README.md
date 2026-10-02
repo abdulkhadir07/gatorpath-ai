@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GatorPath AI
 
-## Getting Started
+See how today's course decisions shape your path to graduation at SF State.
 
-First, run the development server:
+GatorPath turns an SFSU Computer Science student's completed courses into a semester-by-semester plan, flags graduation bottlenecks, and runs **what-if** simulations ("what if I take CSC 340 next fall instead?"). AI explains the consequences in plain language and ranks senior electives against the student's own career goal. Every AI pick is checked against the official catalog before it's shown.
+
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local   # add one AI key (optional; works offline without one)
+npm run dev                  # http://localhost:3000
+npm test                     # engine tests
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+A free Gemini key is available at https://aistudio.google.com. Never commit `.env.local`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## How it works
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Layer | File | Role |
+| --- | --- | --- |
+| Data | `data/courses.json` | BS CS requirements and prerequisites from the SFSU Bulletin (AND/OR prerequisite groups, co-requisites) |
+| Engine | `lib/planner.ts` | Deterministic scheduler: fills each term up to a unit cap, taking courses on the longest prerequisite chain first. What-if pins a course to a term, re-plans, and diffs the result. Bottlenecks are courses whose one-semester slip delays graduation. |
+| AI | `lib/explain.ts`, `lib/electives.ts`, `lib/llm.ts` | Explains engine output (never computes it) and ranks only engine-approved electives. Invented or ineligible codes are rejected and shown as blocked. Deterministic fallbacks run when no key is set. |
+| UI | `components/Planner.tsx`, `CourseGraph.tsx`, `CareerPanel.tsx` | Dashboard, semester board, React Flow prerequisite map, career panel |
 
-## Learn More
+**Code decides the facts. AI explains them.**
 
-To learn more about Next.js, take a look at the following resources:
+## Demo script (90 seconds)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. "This is Alex, an SFSU CS junior who wants to graduate Spring 2028." Point at progress and the **3 bottlenecks** banner.
+2. Alex works part-time and wants to push **CSC 340** to Fall 2027. Use its "What if I move it…" menu.
+3. CSC 415, CSC 510 and CSC 652 turn red, the map shows the chain, and graduation slips to **Fall 2028**.
+4. Click **Explain this**: AI explains why, using only the engine's facts. Click **Undo**.
+5. Type "I want to work in cybersecurity at a startup" and click **Find my electives**: ranked, catalog-verified electives that keep Spring 2028.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Responsible AI
 
-## Deploy on Vercel
+- No accounts or real student records. Sample student only.
+- Prerequisites and dates come from deterministic code, not the model. Every AI output is labeled.
+- The model only sees engine output and an eligible course list. Anything outside it is rejected.
+- Keyboard-usable controls, labeled form fields, and a text semester board alongside the visual map.
+- Not a degree audit. Students should confirm with an advisor and the official Degree Planner.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Known simplifications
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Grades, GPA and standing requirements aren't modeled. Every course is assumed offered every fall and spring. Electives are a subset of the approved list. See `modelingNotes` in `data/courses.json`.
+
+## Next steps at SFSU
+
+Import completed courses from the official degree audit instead of manual entry, real term-offering data from the class schedule, more majors from the Bulletin, an advisor view, and SFSU opportunity matching.
